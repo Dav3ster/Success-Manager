@@ -1,8 +1,84 @@
-function generateHTML(data){
+// create the team
+const generateTeam = team => {
 
-return `<!DOCTYPE html>
+    // create the manager html
+    const generateManager = manager => {
+        return `
+        <div class="card employee-card">
+        <div class="card-header">
+            <h2 class="card-title">${manager.getName()}</h2>
+            <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i>${manager.getRole()}</h3>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">ID: ${manager.getId()}</li>
+                <li class="list-group-item">Email: <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a></li>
+                <li class="list-group-item">Office number: ${manager.getOffice()}</li>
+            </ul>
+        </div>
+    </div>`;
+    };
+
+    // create the html for engineers
+    const generateEngineer = engineer => {
+        return `
+        <div class="card employee-card">
+        <div class="card-header">
+            <h2 class="card-title">${engineer.getName()}</h2>
+            <h3 class="card-title"><i class="fas fa-glasses mr-2"></i>${engineer.getRole()}</h3>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">ID: ${engineer.getId()}</li>
+                <li class="list-group-item">Email: <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a></li>
+                <li class="list-group-item">GitHub: <a href="https://github.com/${engineer.getGithub()}" target="_blank" rel="noopener noreferrer">${engineer.getGithub()}</a></li>
+            </ul>
+        </div>
+    </div>`;
+    };
+
+    // create the html for interns
+    const generateIntern = intern => {
+        return `
+        <div class="card employee-card">
+        <div class="card-header">
+            <h2 class="card-title">${intern.getName()}</h2>
+            <h3 class="card-title"><i class="fas fa-user-graduate mr-2"></i>${intern.getRole()}</h3>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">ID: ${intern.getId()}</li>
+                <li class="list-group-item">Email: <a href="mailto:${intern.getEmail()}">${intern.getEmail()}</a></li>
+                <li class="list-group-item">School: ${intern.getSchool()}</li>
+            </ul>
+        </div>
+    </div>`;
+    };
+
+    const html = [];
+
+    html.push(team
+        .filter(employee => employee.getRole() === "Manager")
+        .map(manager => generateManager(manager))
+    );
+    html.push(team
+        .filter(employee => employee.getRole() === "Engineer")
+        .map(engineer => generateEngineer(engineer))
+        .join("")
+    );
+    html.push(team
+        .filter(employee => employee.getRole() === "Intern")
+        .map(intern => generateIntern(intern))
+        .join("")
+    );
+    return html.join("");
+}
+
+// export function to generate entire page
+module.exports = team => {
+    return `
+    <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,10 +86,9 @@ return `<!DOCTYPE html>
     <title>My Team</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
     <script src="https://kit.fontawesome.com/c502137733.js"></script>
 </head>
-
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -25,53 +100,11 @@ return `<!DOCTYPE html>
     <div class="container">
         <div class="row">
             <div class="team-area col-12 d-flex justify-content-center">
-                
-        <div class="card employee-card">
-        <div class="card-header">
-            <h2 class="card-title">Brad</h2>
-            <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i>Manager</h3>
-        </div>
-        <div class="card-body">
-            <ul class="list-group">
-                <li class="list-group-item">ID: 23</li>
-                <li class="list-group-item">Email: <a href="mailto:b@e.com">b@e.com</a></li>
-                <li class="list-group-item">Office number: 325</li>
-            </ul>
-        </div>
-    </div>
-        
-        <div class="card employee-card">
-    <div class="card-header">
-        <h2 class="card-title">Jane</h2>
-        <h3 class="card-title"><i class="fas fa-glasses mr-2"></i>Engineer</h3>
-    </div>
-    <div class="card-body">
-        <ul class="list-group">
-            <li class="list-group-item">ID: 332</li>
-            <li class="list-group-item">Email: <a href="mailto:32@e.com">32@e.com</a></li>
-            <li class="list-group-item">GitHub: <a href="https://github.com/bla234" target="_blank" rel="noopener noreferrer">bla234</a></li>
-        </ul>
-    </div>
-</div>
-        
-        <div class="card employee-card">
-    <div class="card-header">
-        <h2 class="card-title">Name</h2>
-        <h3 class="card-title"><i class="fas fa-user-graduate mr-2"></i>Intern</h3>
-    </div>
-    <div class="card-body">
-        <ul class="list-group">
-            <li class="list-group-item">ID: 25</li>
-            <li class="list-group-item">Email: <a href="mailto:E@e.com">E@e.com</a></li>
-            <li class="list-group-item">School: unc</li>
-        </ul>
-    </div>
-</div>
-        
+                ${generateTeam(team)}
             </div>
         </div>
     </div>
 </body>
-</html>`}
-
-module.exports = generateHTML;
+</html>
+    `;
+};
