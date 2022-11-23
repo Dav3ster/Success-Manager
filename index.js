@@ -184,7 +184,6 @@ function appMenu() {
   }
 
   function buildTeam() {
-    // Create the output directory if the dist path doesn't exist
     if (!fs.existsSync(DIST_DIR)) {
       fs.mkdirSync(DIST_DIR);
     }
